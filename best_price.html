@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Best Price</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="icon"
+      type="image/png"
+      href="dollar-icon.png">
+
+    <style>
+        .success-bak {
+            background-color: #28a745 !important;
+        }
+        .danger-bak {
+            background-color: #dc3545 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Prices</h2>
+
+        <div class="row">
+            <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
+                <label>Price 1:</label>
+                <input id="price1" type="number" class="form-control" onchange="inputChanged(this)"></input>
+                <label>Amount 1:</label>
+                <input id="amount1" type="number" class="form-control" onchange="inputChanged(this)"></input>
+            </div>
+            <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
+                <label>Calculated 1:</label>
+                <input id="price1calc" class="form-control" disabled></input>
+                <label>&nbsp;</label>
+                <input id="amount1calc" class="form-control" disabled></input>
+            </div>
+            <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
+                <label>Price 2:</label>
+                <input id="price2" type="number" class="form-control" onchange="inputChanged(this)"></input>
+                <label>Amount 2:</label>
+                <input id="amount2" type="number" class="form-control" onchange="inputChanged(this)"></input>
+            </div>
+            <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
+                <label>Calculated 2:</label>
+                <input id="price2calc" class="form-control" disabled></input>
+                <label>&nbsp;</label>
+                <input id="amount2calc" class="form-control" disabled></input>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="row">
+            <div class="col-sm">
+                <button class="btn btn-primary btn-block" onclick="clearAll()">Clear all</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var price1El = document.getElementById('price1');
+        var amount1El = document.getElementById('amount1');
+        var price2El = document.getElementById('price2');
+        var amount2El = document.getElementById('amount2');
+
+        var price1CalcEl = document.getElementById('price1calc');
+        var amount1CalcEl = document.getElementById('amount1calc');
+        var price2CalcEl = document.getElementById('price2calc');
+        var amount2CalcEl = document.getElementById('amount2calc');
+            
+        function inputChanged(element) {
+            checkValue(element);
+            process();
+        }
+
+        function process() {
+
+            clearCalculatedPrices();
+
+            var inputCount = 4;
+
+            if (price1El.value == '') {
+                inputCount--;
+            }
+            if (amount1El.value == '') {
+                inputCount--;
+            }
+            if (price2El.value == '') {
+                inputCount--;
+            }
+            if (amount2El.value == '') {
+                inputCount--;
+            }
+
+            if (inputCount < 3) {
+                console.log('** Insufficient input values. Exit.');
+                return;
+            }
+
+
+            var price1 = parseFloat(price1El.value.replace(',', '.'));
+            var amount1 = parseFloat(amount1El.value.replace(',', '.'));
+            var price2 = parseFloat(price2El.value.replace(',', '.'));
+            var amount2 = parseFloat(amount2El.value.replace(',', '.'));
+
+            inputCount = 4;
+
+            if (price1 === 0 || isNaN(price1)) {
+                price1 = undefined;
+                inputCount--;
+            }
+            if (amount1 === 0 || isNaN(amount1)) {
+                amount1 = undefined;
+                inputCount--;
+            }
+            if (price2 === 0 || isNaN(price2)) {
+                price2 = undefined;
+                inputCount--;
+            }
+            if (amount2 === 0 || isNaN(amount2)) {
+                amount2 = undefined;
+                inputCount--;
+            }
+
+            if (inputCount < 3) {
+                console.log('** Zero or invalid values. Exit.');
+                return;
+            }
+
+            console.log('** Calculating...');
+
+            calculate(price1, amount1, price2, amount2, inputCount);
+        }
+
+        function checkValue(el) {
+            var value = parseFloat(el.value);
+
+            if (value === 0 || isNaN(value)) {
+                console.log('** Clearing invalid value.');
+                el.value = '';
+            }
+        }
+
+        function calculate(p1, a1, p2, a2, count) {
+
+            if (count == 4) {
+                console.log('** All fields.');
+
+                var price1Calc = p2 * a1 / a2;
+                var amount1Calc = p1 * a2 / p2;
+                var price2Calc = p1 * a2 / a1;
+                var amount2Calc = p2 * a1 / p1;
+
+                price1CalcEl.value = price1Calc.toPrecision(3);
+                amount1CalcEl.value = amount1Calc.toPrecision(3);
+                price2CalcEl.value = price2Calc.toPrecision(3);
+                amount2CalcEl.value = amount2Calc.toPrecision(3);
+
+                if (price1Calc < p1) {
+                    price1CalcEl.classList.add('danger-bak');
+                    amount1CalcEl.classList.add('danger-bak');
+                    price2CalcEl.classList.add('success-bak');
+                    amount2CalcEl.classList.add('success-bak');
+                }
+                else if (price1Calc > p1) {
+                    price1CalcEl.classList.add('success-bak');
+                    amount1CalcEl.classList.add('success-bak');
+                    price2CalcEl.classList.add('danger-bak');
+                    amount2CalcEl.classList.add('danger-bak');
+                }
+                else {
+                    price1CalcEl.classList.add('success-bak');
+                    amount1CalcEl.classList.add('success-bak');
+                    price2CalcEl.classList.add('success-bak');
+                    amount2CalcEl.classList.add('success-bak');
+                }
+            }
+            else {
+                console.log('** Part of fields.');
+
+                if (p1 == undefined) {
+                    console.log('** P1 undefined.');
+
+                    var price1Calc = p2 * a1 / a2;
+                    price1CalcEl.value = price1Calc.toPrecision(3);
+                }
+                else if (a1 == undefined) {
+                    console.log('** A1 undefined.');
+
+                    var amount1Calc = p1 * a2 / p2;
+                    amount1CalcEl.value = amount1Calc.toPrecision(3);
+                }
+                else if (p2 == undefined) {
+                    console.log('** P2 undefined.');
+
+                    var price2Calc = p1 * a2 / a1;
+                    price2CalcEl.value = price2Calc.toPrecision(3);
+                }
+                else {
+                    console.log('** A2 undefined.');
+
+                    var amount2Calc = p2 * a1 / p1;
+                    amount2CalcEl.value = amount2Calc.toPrecision(3);
+                }
+            }
+        }
+
+        function clearCalculatedPrices() {
+
+            price1CalcEl.value = '';
+            amount1CalcEl.value = '';
+            price2CalcEl.value = '';
+            amount2CalcEl.value = '';
+
+            price1CalcEl.classList.remove('success-bak');
+            price1CalcEl.classList.remove('danger-bak');
+
+            amount1CalcEl.classList.remove('success-bak');
+            amount1CalcEl.classList.remove('danger-bak');
+
+            price2CalcEl.classList.remove('success-bak');
+            price2CalcEl.classList.remove('danger-bak');
+
+            amount2CalcEl.classList.remove('success-bak');
+            amount2CalcEl.classList.remove('danger-bak');
+        }
+        
+        function clearAll() {
+            
+            price1El.value = '';
+            amount1El.value = '';
+            price2El.value = '';
+            amount2El.value = '';
+            
+            clearCalculatedPrices();
+        }
+    </script>
+</body>
+</html>
