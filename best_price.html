@@ -28,9 +28,9 @@
         <div class="row">
             <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
                 <label>Price 1:</label>
-                <input id="price1" type="number" class="form-control" onchange="inputChanged(this)"></input>
+                <input id="price1" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
                 <label>Amount 1:</label>
-                <input id="amount1" type="number" class="form-control" onchange="inputChanged(this)"></input>
+                <input id="amount1" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
             </div>
             <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
                 <label>Calculated 1:</label>
@@ -40,9 +40,9 @@
             </div>
             <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
                 <label>Price 2:</label>
-                <input id="price2" type="number" class="form-control" onchange="inputChanged(this)"></input>
+                <input id="price2" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
                 <label>Amount 2:</label>
-                <input id="amount2" type="number" class="form-control" onchange="inputChanged(this)"></input>
+                <input id="amount2" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
             </div>
             <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
                 <label>Calculated 2:</label>
@@ -102,10 +102,10 @@
             }
 
 
-            var price1 = parseFloat(price1El.value.replace(',', '.'));
-            var amount1 = parseFloat(amount1El.value.replace(',', '.'));
-            var price2 = parseFloat(price2El.value.replace(',', '.'));
-            var amount2 = parseFloat(amount2El.value.replace(',', '.'));
+            var price1 = parseFloat(price1El.value);
+            var amount1 = parseFloat(amount1El.value);
+            var price2 = parseFloat(price2El.value);
+            var amount2 = parseFloat(amount2El.value);
 
             inputCount = 4;
 
@@ -143,6 +143,9 @@
                 console.log('** Clearing invalid value.');
                 el.value = '';
             }
+            else {
+                el.value = value;
+            }
         }
 
         function calculate(p1, a1, p2, a2, count) {
@@ -155,10 +158,10 @@
                 var price2Calc = p1 * a2 / a1;
                 var amount2Calc = p2 * a1 / p1;
 
-                price1CalcEl.value = price1Calc.toPrecision(3);
-                amount1CalcEl.value = amount1Calc.toPrecision(3);
-                price2CalcEl.value = price2Calc.toPrecision(3);
-                amount2CalcEl.value = amount2Calc.toPrecision(3);
+                price1CalcEl.value = price1Calc.toFixed(2);
+                amount1CalcEl.value = amount1Calc.toFixed(2);
+                price2CalcEl.value = price2Calc.toFixed(2);
+                amount2CalcEl.value = amount2Calc.toFixed(2);
 
                 if (price1Calc < p1) {
                     price1CalcEl.classList.add('danger-bak');
@@ -186,25 +189,25 @@
                     console.log('** P1 undefined.');
 
                     var price1Calc = p2 * a1 / a2;
-                    price1CalcEl.value = price1Calc.toPrecision(3);
+                    price1CalcEl.value = price1Calc.toFixed(2);
                 }
                 else if (a1 == undefined) {
                     console.log('** A1 undefined.');
 
                     var amount1Calc = p1 * a2 / p2;
-                    amount1CalcEl.value = amount1Calc.toPrecision(3);
+                    amount1CalcEl.value = amount1Calc.toFixed(2);
                 }
                 else if (p2 == undefined) {
                     console.log('** P2 undefined.');
 
                     var price2Calc = p1 * a2 / a1;
-                    price2CalcEl.value = price2Calc.toPrecision(3);
+                    price2CalcEl.value = price2Calc.toFixed(2);
                 }
                 else {
                     console.log('** A2 undefined.');
 
                     var amount2Calc = p2 * a1 / p1;
-                    amount2CalcEl.value = amount2Calc.toPrecision(3);
+                    amount2CalcEl.value = amount2Calc.toFixed(2);
                 }
             }
         }
