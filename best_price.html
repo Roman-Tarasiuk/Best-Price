@@ -18,6 +18,12 @@
         .danger-bak {
             background-color: #dc3545 !important;
         }
+        .lbl {
+            width: 30%;
+        }
+        .arrange {
+            visibility: hidden;
+        }
     </style>
 </head>
 
@@ -26,29 +32,53 @@
         <h2>Prices</h2>
 
         <div class="row">
-            <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
-                <label>Price 1:</label>
-                <input id="price1" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
-                <label>Amount 1:</label>
-                <input id="amount1" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
+            <div class="col-md-3 col-sm-6">
+                <div class="input-group">
+                    <label class="lbl">Price 1:</label>
+                    <input id="price1" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
+                    <button class="btn" onclick="clearValue('price1')">&times;</button>
+                </div>
+                <div class="input-group">
+                    <label class="lbl">Amount 1:</label>
+                    <input id="amount1" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
+                    <button class="btn" onclick="clearValue('amount1')">&times;</button>
+                </div>
             </div>
-            <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
-                <label>Calculated 1:</label>
-                <input id="price1calc" class="form-control" disabled></input>
-                <label>&nbsp;</label>
-                <input id="amount1calc" class="form-control" disabled></input>
+            <div class="col-md-3 col-sm-6">
+                <div class="input-group">
+                    <label class="lbl">Calc. 1:</label>
+                    <input id="price1calc" class="form-control" disabled></input>
+                    <button class="btn arrange" disabled>&times;</button>
+                </div>
+                <div class="input-group">
+                    <label class="lbl">&nbsp;</label>
+                    <input id="amount1calc" class="form-control" disabled></input>
+                    <button class="btn arrange" disabled>&times;</button>
+                </div>
             </div>
-            <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
-                <label>Price 2:</label>
-                <input id="price2" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
-                <label>Amount 2:</label>
-                <input id="amount2" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
+            <div class="col-md-3 col-sm-6">
+                <div class="input-group">
+                    <label class="lbl">Price 2:</label>
+                    <input id="price2" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
+                    <button class="btn" onclick="clearValue('price2')">&times;</button>
+                </div>
+                <div class="input-group">
+                    <label class="lbl">Amount 2:</label>
+                    <input id="amount2" type="number" pattern="[0-9]+([\.,][0-9]+)?" step="0.001" class="form-control" onchange="inputChanged(this)"></input>
+                    <button class="btn" onclick="clearValue('amount2')">&times;</button>
+                </div>
             </div>
-            <div class="offset-md-1 col-md-2 offset-sm-1 col-sm-5">
-                <label>Calculated 2:</label>
-                <input id="price2calc" class="form-control" disabled></input>
-                <label>&nbsp;</label>
-                <input id="amount2calc" class="form-control" disabled></input>
+            <div class="col-md-3 col-sm-6">
+                <div class="input-group">
+                    <label class="lbl">Calc. 2:</label>
+                    <input id="price2calc" class="form-control" disabled></input>
+                    <button class="btn arrange" disabled>&times;</button>
+                </div>
+                <div class="input-group">
+                    <label class="lbl">&nbsp;</label>
+                    <input id="amount2calc" class="form-control" disabled></input>
+                    <button class="btn arrange" disabled>&times;</button>
+                </div>
             </div>
         </div>
         
@@ -240,6 +270,12 @@
             amount2El.value = '';
             
             clearCalculatedPrices();
+        }
+        
+        function clearValue(id) {
+            var element = document.getElementById(id);
+            element.value = '';
+            inputChanged(element);
         }
     </script>
 </body>
